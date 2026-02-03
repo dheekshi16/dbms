@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - K.G. College of Arts and Science</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">KGCAS Admission Form</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/form.html">Apply</a></li>
+            <li><a href="/admin.html" style="color: #c084fc;">Admin</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="hero" style="margin-bottom: 2rem;">
+            <h2>Admin Dashboard</h2>
+            <p>View all received applications.</p>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>GPA</th>
+                        <th>Submitted At</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center;">Loading data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function fetchAdmissions() {
+            try {
+                const response = await fetch('/api/admissions');
+                const result = await response.json();
+                const rows = result.data;
+                const tbody = document.getElementById('tableBody');
+
+                tbody.innerHTML = '';
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No applications found.</td></tr>';
+                    return;
+                }
+
+                rows.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>#${row.id}</td>
+                        <td>${row.full_name}</td>
+                        <td>${row.email}</td>
+                        <td>${row.course.toUpperCase()}</td>
+                        <td>${row.gpa}</td>
+                        <td>${new Date(row.submission_date).toLocaleDateString()}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; color: #ff4d4d;">Error loading data.</td></tr>';
+            }
+        }
+
+        fetchAdmissions();
+    </script>
+</body>
+
+</html>
