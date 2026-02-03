@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply - K.G. College of Arts and Science</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+    <nav>
+        <div class="logo">KGCAS Admission Form</div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/form.html" style="color: #818cf8;">Apply</a></li>
+            <li><a href="/admin.html">Admin</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="hero" style="margin-bottom: 2rem;">
+            <h2>K.G. College of Arts and Science Admission Form</h2>
+            <p>Please fill out the form carefully.</p>
+        </div>
+
+        <div class="form-card">
+            <form id="admissionForm">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Full Name</label>
+                        <input type="text" name="full_name" required placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required placeholder="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" required placeholder="+1 234 567 8900">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="dob" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Address</label>
+                        <textarea name="address" rows="3" required placeholder="123 Main St, City, Country"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Applying For Course</label>
+                        <select name="course" required>
+                            <option value="">Select Course</option>
+                            <option value="cs">Computer Science</option>
+                            <option value="ct">Computer Technology</option>
+                            <option value="eng">Engineering</option>
+                            <option value="business">Business Admin</option>
+                            <option value="arts">Liberal Arts</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>High School Name</label>
+                        <input type="text" name="high_school" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>GPA / Percentage</label>
+                        <input type="number" step="0.01" name="gpa" required placeholder="3.8">
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button type="submit" class="btn" style="min-width: 200px;">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('admissionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    window.location.href = '/success.html';
+                } else {
+                    alert('Error submitting form. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Something went wrong.');
+            }
+        });
+    </script>
+</body>
+
+</html>
